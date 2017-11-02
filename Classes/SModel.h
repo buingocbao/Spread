@@ -1,34 +1,58 @@
 //
-//  Mapper.h
-//  Mapper
+//  SModel.h
+//  Spread
 //
 //  Created by Huy Pham on 3/26/15.
 //  Copyright (c) 2015 Katana. All rights reserved.
 //
 
-#import "Decoder.h"
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Mapper events description.
+ *  SModel events description.
  */
-typedef NS_ENUM(NSInteger, MapperEvent){
+typedef NS_ENUM(NSInteger, SModelEvent){
     /**
      *  Model will trigger event when value of data is increased.
      */
-    MapperEventOnIncrease = 0x01,
+    SModelEventOnIncrease = 0x01,
     /**
      *  Model will trigger event when value of data is decreased.
      */
-    MapperEventOnDecrease = 0x02,
+    SModelEventOnDecrease = 0x02,
     /**
      *  Model will trigger event when value of data is changed.
      */
-    MapperEventOnChange = 0x03
+    SModelEventOnChange = 0x03
 };
 
-@interface Mapper : Decoder
+@interface SModel : NSObject
+
+/**
+ *  Auto mapping properties object with dictionary/json.
+ *
+ *  @param dictionary Data to mapping.
+ *
+ *  @return Object mapping.
+ */
+- (instancetype)initWithDictionary:(nullable NSDictionary *)dictionary;
+
+/**
+ *  Auto mapping properties object with dictionary/json.
+ *
+ *  @param dictionary Data to mapping.
+ */
+- (void)initData:(nullable NSDictionary *)dictionary;
+
+/**
+ *  Convert object to dictionary.
+ *
+ *  @return Object dictionary.
+ */
+- (NSDictionary *)toDictionary;
+
 /**
  *  Register reaction for property on an event.
  *
@@ -37,7 +61,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *  @param reaction Reaction handler.
  */
 - (void)property:(NSString *)property
-         onEvent:(MapperEvent)event
+         onEvent:(SModelEvent)event
         reaction:(void(^)(id oldValue, id newValue))reaction;
 
 /**
@@ -48,7 +72,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *  @param reaction   Reaction handler.
  */
 - (void)properties:(NSArray *)properties
-           onEvent:(MapperEvent)event
+           onEvent:(SModelEvent)event
           reaction:(void(^)(id oldValue, id newValue))reaction;
 
 /**
@@ -56,26 +80,26 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *
  *  @param property Property key path.
  *  @param target   Object trigger event.
- *  @param selector   A selector.
+ *  @param action   A selector.
  *  @param event    Event description.
  */
 - (void)property:(NSString *)property
           target:(id)target
         selector:(SEL)selector
-         onEvent:(MapperEvent)event;
+         onEvent:(SModelEvent)event;
 
 /**
  *  Register action for multi properties on an event.
  *
  *  @param properties List of properties key path.
  *  @param target     Object trigger event.
- *  @param selector     A selector.
+ *  @param action     A selector.
  *  @param event      Event description.
  */
 - (void)properties:(NSArray *)properties
             target:(id)target
           selector:(SEL)selector
-           onEvent:(MapperEvent)event;
+           onEvent:(SModelEvent)event;
 
 /**
  *  Remove reactions handler for property on event.
@@ -84,7 +108,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *  @param event    Event description.
  */
 - (void)removeReactionsForProperty:(NSString *)property
-                           onEvent:(MapperEvent)event;
+                           onEvent:(SModelEvent)event;
 
 /**
  *  Remove all reactions handler for property.
@@ -100,7 +124,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *  @param event      Event description.
  */
 - (void)removeReactionsForProperties:(NSArray *)properties
-                             onEvent:(MapperEvent)event;
+                             onEvent:(SModelEvent)event;
 
 /**
  *  Remove all reactions for multi properties.
@@ -125,7 +149,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
 - (void)removeActionsForProperty:(NSString *)property
                           target:(id)target
                         selector:(SEL)selector
-                         onEvent:(MapperEvent)event;
+                         onEvent:(SModelEvent)event;
 
 /**
  *  Remove actions of property with target for all event.
@@ -147,7 +171,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
 /**
  *  Remove actions for multi properties with target on event.
  *
- *  @param properties Property key path.
+ *  @param property Property key path.
  *  @param target   The target.
  *  @param selector The selector to remove.
  *  @param event    Event description.
@@ -155,7 +179,7 @@ typedef NS_ENUM(NSInteger, MapperEvent){
 - (void)removeActionsForProperties:(NSArray *)properties
                             target:(id)target
                           selector:(SEL)selector
-                           onEvent:(MapperEvent)event;
+                           onEvent:(SModelEvent)event;
 
 /**
  *  Remove actions for multi property with target.
@@ -187,8 +211,6 @@ typedef NS_ENUM(NSInteger, MapperEvent){
 
 - (NSString *)getSourceMethod;
 
-- (NSDictionary *)getSourceParameters;
-
 /**
  *  Get data key path.
  *
@@ -205,7 +227,15 @@ typedef NS_ENUM(NSInteger, MapperEvent){
  *  Fetch data in background and handle data when fetch data completed.
  */
 - (void)fetchInBackground:(nullable void(^)(id response,  NSError * _Nullable error))completion;
+
+/**
+ *  Object initial status.
+ *
+ *  @return Initial state.
+ */
+- (BOOL)isInitiated;
 - (BOOL)isFetching;
+- (void)setIsInitiated:(BOOL)initiated;
 
 @end
 

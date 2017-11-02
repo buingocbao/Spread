@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Mapper.h"
 
-@interface Milk : Mapper
+#import "SModel.h"
+
+@interface Milk : SModel
 
 @property (nonatomic, copy) NSString *__id;
 @property (nonatomic) NSInteger number1;

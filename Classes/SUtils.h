@@ -1,6 +1,6 @@
 //
-//  MapperUtils.h
-//  Mapper
+//  SUtils.h
+//  Spread
 //
 //  Created by Huy Pham on 4/9/15.
 //  Copyright (c) 2015 Katana. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MapperUtils : NSObject
+@interface SUtils : NSObject
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
@@ -17,7 +17,6 @@
 + (void)request:(NSString *)url
          method:(NSString *)method
      parameters:(NSDictionary *)parameters
-        headers:(NSDictionary *)headers
 completionHandler:(void(^)(id, NSError *))completion;
 
 + (NSDictionary *)getDataFrom:(NSDictionary *)data

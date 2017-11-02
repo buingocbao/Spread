@@ -10,7 +10,7 @@
 
 #import "Spread.h"
 
-#import "MapperUtils.h"
+#import "SUtils.h"
 
 @interface SpreadAction: NSObject
 
@@ -113,7 +113,7 @@
             [[self sharedInstance] addPool:pool];
             return pool;
         } else {
-            NSAssert([modelClass isSubclassOfClass:[Mapper class]],
+            NSAssert([modelClass isSubclassOfClass:[SModel class]],
                      @"Model register must be SModel or subclass of SModel.");
             NSAssert([pool allModels].count == 0 || pool.modelClass == modelClass,
                      @"Pool contains model and has been registered with another model class.");
@@ -198,7 +198,7 @@
     [[[self sharedInstance] poolActions] removeAllObjects];
 }
 
-+ (Mapper *)addObject:(NSDictionary *)object
++ (SModel *)addObject:(NSDictionary *)object
                toPool:(NSString *)identifier {
     SPool *pool = [self getPool:identifier];
     return [pool addObject:object];
@@ -210,7 +210,7 @@
     return [pool addObjects:objects];
 }
 
-+ (Mapper *)insertObject:(NSDictionary *)object
++ (SModel *)insertObject:(NSDictionary *)object
                  atIndex:(NSInteger)index
                   toPool:(NSString *)identifier {
     SPool *pool = [self getPool:identifier];
@@ -287,7 +287,7 @@
 
 + (void)setMaxConcurrentOperationCount:(NSInteger)maxConcurrentOperationCount {
     NSAssert(maxConcurrentOperationCount >= 0, @"Max concurrent must be geater than zero.");
-    NSOperationQueue *sharedOperationQueue = [[MapperUtils sharedInstance] operationQueue];
+    NSOperationQueue *sharedOperationQueue = [[SUtils sharedInstance] operationQueue];
     [sharedOperationQueue setMaxConcurrentOperationCount:maxConcurrentOperationCount];
 }
 

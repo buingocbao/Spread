@@ -6,7 +6,10 @@
 //  Copyright (c) 2015 Katana. All rights reserved.
 //
 
-class Carrot: Mapper {  
+import UIKit
+
+class Carrot: SModel {
+  
   dynamic var objectId: NSString!
   dynamic var name: NSString!
   dynamic var milk: Milk!
